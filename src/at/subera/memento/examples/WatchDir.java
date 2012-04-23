@@ -31,6 +31,8 @@ package at.subera.memento.examples;
  */
 
 import java.nio.file.*;
+import java.nio.file.WatchEvent.Kind;
+
 import static java.nio.file.StandardWatchEventKinds.*;
 import static java.nio.file.LinkOption.*;
 import java.nio.file.attribute.*;
@@ -129,7 +131,7 @@ public class WatchDir {
             }
 
             for (WatchEvent<?> event: key.pollEvents()) {
-                WatchEvent.Kind kind = event.kind();
+                Kind<?> kind = event.kind();
 
                 // TBD - provide example of how OVERFLOW event is handled
                 if (kind == OVERFLOW) {
