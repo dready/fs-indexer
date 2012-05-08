@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import at.subera.memento.rest.bean.Image;
 import at.subera.memento.rest.service.ImageService;
 
 public class CollectImagesTask implements Runnable {
@@ -42,7 +44,7 @@ public class CollectImagesTask implements Runnable {
 	@Override
 	public void run() {
 		if (logger.isInfoEnabled()) {
-			logger.info(this.directory);
+			logger.info("CollectImagesTask start:" + this.directory);
 		}
 		
 		// TODO Auto-generated method stub
@@ -59,6 +61,11 @@ public class CollectImagesTask implements Runnable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		if (logger.isInfoEnabled()) {
+			List<Image> images = imageService.get();
+			logger.info("Collect End: Found " + images.size() + "images");
 		}
 	}
 
