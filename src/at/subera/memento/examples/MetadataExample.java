@@ -24,5 +24,6 @@ public class MetadataExample {
 			System.out.println("Rating is: " + r);
 			//0x4746
 		}
+		System.out.println("Keywords are: " + directory.getDescription(ExifIFD0Directory.TAG_WIN_KEYWORDS));
 	}
 }

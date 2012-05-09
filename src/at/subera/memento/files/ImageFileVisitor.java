@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 
 import com.drew.imaging.*;
 import com.drew.metadata.*;
-import com.drew.metadata.exif.ExifIFD0Descriptor;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.exif.GpsDirectory;
@@ -35,7 +34,7 @@ public class ImageFileVisitor implements FileVisitor<Path> {
 	private static final Logger logger = Logger.getLogger(ImageFileVisitor.class);
 	
 	// found due tests
-	public static final int TAG_RATING = 0x4746;
+	public static final int TAG_WIN_RATING = 0x4746;
 
 	public void setImageService(ImageService imageService) {
 		this.imageService = imageService;
@@ -80,30 +79,35 @@ public class ImageFileVisitor implements FileVisitor<Path> {
 				// obtain the Exif directory
 				if (metadata.containsDirectory(ExifIFD0Directory.class)) {
 					directory = metadata.getDirectory(ExifIFD0Directory.class);
+					// Image Orientation
 					i.setOrientation((byte) directory.getInt(ExifIFD0Directory.TAG_ORIENTATION));
+					// Windows Keywords
+					if (directory.containsTag(ExifIFD0Directory.TAG_WIN_KEYWORDS)) {
+						i.setKeywords(directory.getDescription(ExifIFD0Directory.TAG_WIN_KEYWORDS));
+					}
+					// Windows Rating
 					int rating = -1;
-					if (directory.containsTag(TAG_RATING)) {
-						rating = directory.getInt(TAG_RATING);
+					if (directory.containsTag(TAG_WIN_RATING)) {
+						rating = directory.getInt(TAG_WIN_RATING);
 					}
 					i.setRating(rating);
 				}
 				// obtain the Exif sub directory
 				if (metadata.containsDirectory(ExifSubIFDDirectory.class)) {
 					directory = metadata.getDirectory(ExifSubIFDDirectory.class);
+					// creation date
 					i.setCreationTime(directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL));
+					// resolution width
 					i.setWidth(directory.getInt(ExifSubIFDDirectory.TAG_EXIF_IMAGE_WIDTH));
+					// resolution height
 					i.setHeight(directory.getInt(ExifSubIFDDirectory.TAG_EXIF_IMAGE_HEIGHT));
 				}
 				// obtain the GPS directory
 				if (metadata.containsDirectory(GpsDirectory.class)) {
 					directory = metadata.getDirectory(GpsDirectory.class);
+					// gps coordinations
 					i.setLatitude(directory.getInt(GpsDirectory.TAG_GPS_LATITUDE));
 					i.setLongitude(directory.getInt(GpsDirectory.TAG_GPS_LONGITUDE));
-				}
-				// optain the IPTC directory
-				if (metadata.containsDirectory(IptcDirectory.class)) {
-					directory = metadata.getDirectory(IptcDirectory.class);
-					i.setKeywords(directory.getString(IptcDirectory.TAG_KEYWORDS));
 				}
 			} catch (MetadataException e) {
 				// TODO Auto-generated catch block
