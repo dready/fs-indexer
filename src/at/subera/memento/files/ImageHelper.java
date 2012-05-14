@@ -28,6 +28,7 @@ public class ImageHelper {
 	
 	public static Image readImageFromFile(Path file, Logger logger) throws IOException, ImageProcessingException {
 		// check if file is image
+		@SuppressWarnings("unused")
 		BufferedImage image = ImageIO.read(file.toFile());
 
 		Metadata metadata = ImageMetadataReader.readMetadata(file.toFile());

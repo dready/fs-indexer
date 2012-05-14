@@ -8,6 +8,7 @@ import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
@@ -29,6 +30,9 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	
 	private static final Logger logger = Logger.getLogger(WatchDirectoryServiceImpl.class);
 	
+	protected FileVisitor<Path> imageVisitor;
+	protected FileVisitor<Path> dirVisitor;
+	
 	public WatchDirectoryServiceImpl(boolean recursive) throws IOException {
 		this.watcher = FileSystems.getDefault().newWatchService();
         this.keys = new HashMap<WatchKey,Path>();
@@ -37,6 +41,14 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	
 	public WatchDirectoryServiceImpl() throws IOException {
 		this(false);
+	}
+	
+	public void setImageVisitor(FileVisitor<Path> visitor) {
+		this.imageVisitor = visitor;
+	}
+
+	public void setDirVisitor(FileVisitor<Path> dirVisitor) {
+		this.dirVisitor = dirVisitor;
 	}
 
 	@Override
@@ -117,6 +129,7 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
                  //   try {
                         if (Files.isDirectory(child, NOFOLLOW_LINKS)) {
                         	CollectImagesTask task = new CollectImagesTask(child.toString());
+                        	task.setVisitor(dirVisitor);
                         	task.init();
                             //registerAll(child);
                         }
@@ -129,7 +142,9 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
                 	if (logger.isInfoEnabled()) {
             			logger.info("Modified Directory " + child.toString());
             		}
-                	
+                	CollectImagesTask task = new CollectImagesTask(child.toString());
+                	task.setVisitor(imageVisitor);
+                	task.init();
                 }
             }
 

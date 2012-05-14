@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -19,6 +20,19 @@ public class CompositeFileVisitor<E> implements FileVisitor<Path> {
 	
 	public void unregister(FileVisitor<Path> visitor) {
 		visitors.remove(visitor);
+	}
+	
+	public CompositeFileVisitor() {
+	}
+	
+	public CompositeFileVisitor(Map<Integer, FileVisitor<Path>> map) {
+		visitors = map;
+	}
+	
+	public CompositeFileVisitor(List<FileVisitor<Path>> list) {
+		for (FileVisitor<Path> v : list) {
+			register(v);
+		}
 	}
 
 	@Override
