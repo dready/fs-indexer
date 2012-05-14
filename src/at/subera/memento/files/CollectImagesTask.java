@@ -10,11 +10,24 @@ import org.apache.log4j.Logger;
 
 import at.subera.memento.rest.bean.Image;
 import at.subera.memento.rest.service.ImageService;
+import at.subera.memento.rest.service.WatchDirectoryService;
 
 public class CollectImagesTask implements Runnable {
 	protected String directory;
 	protected ImageService imageService;
+	protected WatchDirectoryService watchDirectoryService;
 	
+	protected ImageFileVisitor imageVisitor;
+	protected WatchDirVisitor dirVisitor;
+	
+	public void setImageFileVisitor(ImageFileVisitor imageVisitor) {
+		this.imageVisitor = imageVisitor;
+	}
+	
+	public void setDirVisitor(WatchDirVisitor dirVisitor) {
+		this.dirVisitor = dirVisitor;
+	}
+
 	public void setDirectory(String directory) {
 		this.directory = directory;
 	}
@@ -25,6 +38,14 @@ public class CollectImagesTask implements Runnable {
 	
 	public void setImageService(ImageService imageService) {
 		this.imageService = imageService;
+	}
+	
+	public void setImageVisitor(ImageFileVisitor imageVisitor) {
+		this.imageVisitor = imageVisitor;
+	}
+
+	public void setWatchDirectoryService(WatchDirectoryService watchDirectoryService) {
+		this.watchDirectoryService = watchDirectoryService;
 	}
 
 	private static final Logger logger = Logger.getLogger(CollectImagesTask.class);
@@ -37,6 +58,7 @@ public class CollectImagesTask implements Runnable {
 		collector.start();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void cleanup() {
 		collector.stop();
 	}
@@ -47,9 +69,11 @@ public class CollectImagesTask implements Runnable {
 			logger.info("CollectImagesTask start:" + this.directory);
 		}
 		
-		// TODO Auto-generated method stub
-		ImageFileVisitor visitor = new ImageFileVisitor();
-		visitor.setImageService(imageService);
+		// prepare visitors
+		CompositeFileVisitor<Path> visitor = new CompositeFileVisitor<Path>();
+		visitor.register(imageVisitor);
+		visitor.register(dirVisitor);
+		
 		Path root = Paths.get(directory);
 		
 		if (logger.isDebugEnabled()) {
