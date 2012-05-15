@@ -25,6 +25,13 @@ public class ImageFileVisitor extends SimpleFileVisitor<Path> {
 	public void setImageService(ImageService imageService) {
 		this.imageService = imageService;
 	}
+	
+	@Override
+	public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+			throws IOException {
+		imageService.removeByPath(dir.toString());
+		return FileVisitResult.CONTINUE;
+	}
 
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
