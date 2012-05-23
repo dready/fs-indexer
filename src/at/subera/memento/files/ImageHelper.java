@@ -37,6 +37,7 @@ public class ImageHelper {
 		Image i = new Image();
 		i.setId("" + file.toString().hashCode());
 		i.setPath(file.toString());
+		i.setFilename(file.getFileName().toString());
 
 		// add basic file attributes
 		BasicFileAttributes attributes = Files.readAttributes(file,
