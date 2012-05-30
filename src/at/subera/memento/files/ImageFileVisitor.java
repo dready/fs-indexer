@@ -5,6 +5,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.security.NoSuchAlgorithmException;
 
 import org.apache.log4j.Logger;
 
@@ -50,6 +51,9 @@ public class ImageFileVisitor extends SimpleFileVisitor<Path> {
 			if (logger.isInfoEnabled()) {
 				logger.info(e);
 			}
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		return FileVisitResult.CONTINUE;

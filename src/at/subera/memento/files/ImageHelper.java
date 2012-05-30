@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
@@ -21,12 +22,13 @@ import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.exif.GpsDirectory;
 
 import at.subera.memento.rest.bean.Image;
+import at.subera.memento.util.AeSimpleSHA1;
 
 public class ImageHelper {
 	// found due tests
 	public static final int TAG_WIN_RATING = 0x4746;
 	
-	public static Image readImageFromFile(Path file, Logger logger) throws IOException, ImageProcessingException {
+	public static Image readImageFromFile(Path file, Logger logger) throws IOException, ImageProcessingException, NoSuchAlgorithmException {
 		// check if file is image
 		@SuppressWarnings("unused")
 		BufferedImage image = ImageIO.read(file.toFile());
@@ -35,7 +37,7 @@ public class ImageHelper {
 
 		// add image to service
 		Image i = new Image();
-		i.setId("" + file.toString().hashCode());
+		i.setId(AeSimpleSHA1.SHA1(file.toString()));
 		i.setPath(file.toString());
 		i.setFilename(file.getFileName().toString());
 
