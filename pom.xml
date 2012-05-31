@@ -125,6 +125,7 @@
 	<properties>
 		<spring-security.version>3.1.0.RELEASE</spring-security.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<packaging>war</packaging>
 </project>
