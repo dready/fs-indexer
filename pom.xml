@@ -4,6 +4,7 @@
 	<groupId>mementoJS</groupId>
 	<artifactId>mementoJS</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<build>
 		<sourceDirectory>src/</sourceDirectory>
 		<plugins>
@@ -127,5 +128,12 @@
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	<packaging>war</packaging>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
