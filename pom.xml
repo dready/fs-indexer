@@ -37,7 +37,7 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-compile-plugin</artifactId>
+				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
 					<source>1.7</source>
