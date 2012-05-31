@@ -18,6 +18,9 @@ import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 
+import at.subera.memento.rest.bean.Image;
+import at.subera.memento.util.AeSimpleSHA1;
+
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
@@ -26,13 +29,6 @@ import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.exif.GpsDirectory;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-
-import at.subera.memento.rest.bean.Image;
-import at.subera.memento.util.AeSimpleSHA1;
 
 public class ImageHelper {
 	// found due tests
@@ -165,14 +161,6 @@ public class ImageHelper {
 
 		// Write the scaled image to the outputstream
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-		JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(thumbImage);
-		int quality = 100; // Use between 1 and 100, with 100 being highest
-							// quality
-		quality = Math.max(0, Math.min(quality, 100));
-		param.setQuality((float) quality / 100.0f, false);
-		encoder.setJPEGEncodeParam(param);
-		encoder.encode(thumbImage);
 		ImageIO.write(thumbImage, "jpg", out);
 
 		// Read the outputstream into the inputstream for the return value
