@@ -106,10 +106,10 @@ public class ImageHelper {
 				directory = metadata.getDirectory(GpsDirectory.class);
 				// gps coordinations
 				if (directory.containsTag(GpsDirectory.TAG_GPS_LATITUDE)) {
-					i.setLatitude(directory.getInt(GpsDirectory.TAG_GPS_LATITUDE));
+					i.setLatitude(directory.getRational(GpsDirectory.TAG_GPS_LATITUDE));
 				}
 				if (directory.containsTag(GpsDirectory.TAG_GPS_LONGITUDE)) {
-					i.setLongitude(directory.getInt(GpsDirectory.TAG_GPS_LONGITUDE));
+					i.setLongitude(directory.getRational(GpsDirectory.TAG_GPS_LONGITUDE));
 				}
 			}
 		} catch (MetadataException e) {
