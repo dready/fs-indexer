@@ -86,14 +86,20 @@ public class ImageHelper {
 			if (metadata.containsDirectory(ExifSubIFDDirectory.class)) {
 				directory = metadata.getDirectory(ExifSubIFDDirectory.class);
 				// creation date
-				i.setCreationTime(directory
+				if (directory.containsTag(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL)) {
+					i.setCreationTime(directory
 						.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL));
+				}
 				// resolution width
-				i.setWidth(directory
+				if (directory.containsTag(ExifSubIFDDirectory.TAG_EXIF_IMAGE_WIDTH)) {
+					i.setWidth(directory
 						.getInt(ExifSubIFDDirectory.TAG_EXIF_IMAGE_WIDTH));
+				}
 				// resolution height
-				i.setHeight(directory
+				if (directory.containsTag(ExifSubIFDDirectory.TAG_EXIF_IMAGE_HEIGHT)) {
+					i.setHeight(directory
 						.getInt(ExifSubIFDDirectory.TAG_EXIF_IMAGE_HEIGHT));
+				}
 			}
 			// obtain the GPS directory
 			if (metadata.containsDirectory(GpsDirectory.class)) {
