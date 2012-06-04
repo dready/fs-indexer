@@ -66,8 +66,10 @@ public class ImageHelper {
 			if (metadata.containsDirectory(ExifIFD0Directory.class)) {
 				directory = metadata.getDirectory(ExifIFD0Directory.class);
 				// Image Orientation
-				i.setOrientation((byte) directory
-						.getInt(ExifIFD0Directory.TAG_ORIENTATION));
+				if (directory.containsTag(ExifIFD0Directory.TAG_ORIENTATION)) {
+					i.setOrientation((byte) directory
+							.getInt(ExifIFD0Directory.TAG_ORIENTATION));
+				}
 				// Windows Keywords
 				if (directory.containsTag(ExifIFD0Directory.TAG_WIN_KEYWORDS)) {
 					i.setKeywords(directory
