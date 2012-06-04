@@ -23,6 +23,7 @@ import at.subera.memento.util.AeSimpleSHA1;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
+import com.drew.lang.Rational;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
@@ -33,7 +34,7 @@ import com.drew.metadata.exif.GpsDirectory;
 public class ImageHelper {
 	// found due tests
 	public static final int TAG_WIN_RATING = 0x4746;
-
+	
 	public static Image readImageFromFile(Path file, Logger logger)
 			throws IOException, ImageProcessingException,
 			NoSuchAlgorithmException {
@@ -106,10 +107,12 @@ public class ImageHelper {
 				directory = metadata.getDirectory(GpsDirectory.class);
 				// gps coordinations
 				if (directory.containsTag(GpsDirectory.TAG_GPS_LATITUDE)) {
-					i.setLatitude(directory.getRational(GpsDirectory.TAG_GPS_LATITUDE).floatValue());
+					Rational[] r = directory.getRationalArray(GpsDirectory.TAG_GPS_LATITUDE);
+					i.setLatitude(convertRationalArrayToString(r));
 				}
 				if (directory.containsTag(GpsDirectory.TAG_GPS_LONGITUDE)) {
-					i.setLongitude(directory.getRational(GpsDirectory.TAG_GPS_LONGITUDE).floatValue());
+					Rational[] r = directory.getRationalArray(GpsDirectory.TAG_GPS_LONGITUDE);
+					i.setLongitude(convertRationalArrayToString(r));
 				}
 			}
 		} catch (MetadataException e) {
@@ -125,6 +128,14 @@ public class ImageHelper {
 		}
 
 		return i;
+	}
+	
+	public static String convertRationalArrayToString(Rational[] rationalArray) {
+		String ret = "";
+		for (Rational r : rationalArray) {
+			ret += r.toSimpleString(true) + ";";
+		}
+		return ret;
 	}
 
 	/**
