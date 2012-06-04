@@ -1,10 +1,12 @@
 package at.subera.memento.files;
 
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -15,6 +17,8 @@ import at.subera.memento.rest.service.ImageService;
 public class CollectImagesTask implements Runnable {
 	protected String directory;
 	protected ImageService imageService;
+	
+	public static int MAX_DEPTH = 100;
 	
 	protected FileVisitor<Path> visitor;
 
@@ -62,8 +66,10 @@ public class CollectImagesTask implements Runnable {
 			logger.debug(root);
 		}
 		
+		EnumSet<FileVisitOption> opts = EnumSet.of(FileVisitOption.FOLLOW_LINKS);
+		
 		try {
-			Files.walkFileTree(root, visitor);
+			Files.walkFileTree(root, opts, MAX_DEPTH, visitor);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
