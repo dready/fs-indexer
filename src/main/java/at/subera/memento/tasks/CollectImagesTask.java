@@ -13,10 +13,12 @@ import org.apache.log4j.Logger;
 
 import at.subera.memento.rest.bean.Image;
 import at.subera.memento.rest.service.ImageService;
+import at.subera.memento.rest.service.StatsService;
 
 public class CollectImagesTask implements Runnable {
 	protected String directory;
 	protected ImageService imageService;
+	protected StatsService statsService;
 	
 	public static int MAX_DEPTH = 100;
 	
@@ -38,6 +40,10 @@ public class CollectImagesTask implements Runnable {
 		this.imageService = imageService;
 	}
 	
+	public void setStatsService(StatsService statsService) {
+		this.statsService = statsService;
+	}
+
 	private static final Logger logger = Logger.getLogger(CollectImagesTask.class);
 
 	Thread collector;
@@ -59,6 +65,8 @@ public class CollectImagesTask implements Runnable {
 			logger.info("CollectImagesTask start:" + this.directory);
 		}
 		
+		statsService.startThread(this);
+		
 		// prepare visitors
 		Path root = Paths.get(directory);
 		
@@ -74,6 +82,8 @@ public class CollectImagesTask implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		statsService.endThread(this);
 		
 		if (logger.isInfoEnabled() && imageService != null) {
 			List<Image> images = imageService.get();
