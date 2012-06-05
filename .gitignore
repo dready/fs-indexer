@@ -4,3 +4,4 @@
 /.classpath
 /.project
 /bin
+/src/main/resources/deployment.properties
