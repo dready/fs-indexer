@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.log4j.Logger;
 
+import at.subera.memento.image.ContentTypeExcpetion;
 import at.subera.memento.image.ImageHelper;
 import at.subera.memento.rest.service.ImageService;
 
@@ -48,13 +49,16 @@ public class ImageFileVisitor extends SimpleFileVisitor<Path> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ImageProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ContentTypeExcpetion e) {
 			// Typical, not an image
 			if (logger.isInfoEnabled()) {
 				logger.info(e);
 			}
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 		return FileVisitResult.CONTINUE;
