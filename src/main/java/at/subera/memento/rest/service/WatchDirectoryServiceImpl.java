@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import at.subera.memento.files.CollectImagesTask;
+import at.subera.memento.tasks.CollectImagesTask;
 
 public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	private final WatchService watcher;

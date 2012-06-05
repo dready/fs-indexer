@@ -1,4 +1,4 @@
-package at.subera.memento.files;
+package at.subera.memento.filevisitor;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.log4j.Logger;
 
+import at.subera.memento.image.ImageHelper;
 import at.subera.memento.rest.service.ImageService;
 
 import com.drew.imaging.ImageProcessingException;
