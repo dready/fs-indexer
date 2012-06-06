@@ -65,7 +65,9 @@ public class CollectImagesTask implements Runnable {
 			logger.info("CollectImagesTask start:" + this.directory);
 		}
 		
-		statsService.startThread(this);
+		if (statsService != null) {
+			statsService.startThread(this);
+		}
 		
 		// prepare visitors
 		Path root = Paths.get(directory);
@@ -83,7 +85,9 @@ public class CollectImagesTask implements Runnable {
 			e.printStackTrace();
 		}
 		
-		statsService.endThread(this);
+		if (statsService != null) {
+			statsService.endThread(this);
+		}
 		
 		if (logger.isInfoEnabled() && imageService != null) {
 			List<Image> images = imageService.get();
