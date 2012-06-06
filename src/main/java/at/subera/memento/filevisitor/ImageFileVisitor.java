@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import org.apache.log4j.Logger;
 
 import at.subera.memento.image.ContentTypeExcpetion;
-import at.subera.memento.image.ImageHelper;
+import at.subera.memento.rest.bean.util.ImageHelper;
 import at.subera.memento.rest.service.ImageService;
 
 import com.drew.imaging.ImageProcessingException;
@@ -46,7 +46,7 @@ public class ImageFileVisitor extends SimpleFileVisitor<Path> {
 		
 		// check if File is image
 		String contentType = Files.probeContentType(file);
-		if (ImageHelper.isContentTypeAnImage(contentType)) {
+		if (!ImageHelper.isContentTypeAnImage(contentType)) {
 			return FileVisitResult.CONTINUE;
 		}
 		
