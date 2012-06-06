@@ -2,6 +2,7 @@ package at.subera.memento.filevisitor;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -41,6 +42,12 @@ public class ImageFileVisitor extends SimpleFileVisitor<Path> {
 			throws IOException {
 		if (logger.isInfoEnabled()) {
 			logger.info("Working on File: " + file.toString());
+		}
+		
+		// check if File is image
+		String contentType = Files.probeContentType(file);
+		if (ImageHelper.isContentTypeAnImage(contentType)) {
+			return FileVisitResult.CONTINUE;
 		}
 		
 		try {			
