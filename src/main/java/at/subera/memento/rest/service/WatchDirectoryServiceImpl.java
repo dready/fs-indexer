@@ -58,19 +58,13 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	public void register(Path dir) throws IOException {
 		WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE,
 				ENTRY_MODIFY);
-		if (trace) {
+		if (trace && logger.isInfoEnabled()) {
 			Path prev = keys.get(key);
 			if (prev == null) {
-				if (logger.isInfoEnabled()) {
-					logger.info("register: " + dir.toString());
-				}
+				logger.info("register: " + dir.toString());
 			} else {
 				if (!dir.equals(prev)) {
-					System.out.format("update: %s -> %s\n", prev, dir);
-					if (logger.isInfoEnabled()) {
-						logger.info(String.format("update: %s -> %s\n", prev,
-								dir));
-					}
+					logger.info(String.format("update: %s -> %s\n", prev, dir));
 				}
 			}
 		}
@@ -136,19 +130,14 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 		boolean valid = key.reset();
 		if (!valid) {
 			keys.remove(key);
-
-			// all directories are inaccessible
-			if (keys.isEmpty()) {
-				return; // just return, thread should go on
-			}
 		}
 	}
+
 	protected void handleChangesOnDirectory(Path child, Kind<?> kind) {
 		// if directory is created, and watching recursively, then
 		// register it and its sub-directories
 		if (recursive && (kind == ENTRY_CREATE)) {
-			CollectImagesTask task = new CollectImagesTask(
-					child.toString());
+			CollectImagesTask task = new CollectImagesTask(child.toString());
 			task.setVisitor(dirVisitor);
 			task.init();
 		}
@@ -162,6 +151,7 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 			task.init();
 		}
 	}
+
 	protected void handleChangesOnFiles(Path child, Kind<?> kind) {
 		if (kind == ENTRY_DELETE) {
 			imageService.removeByPath(child.toString());

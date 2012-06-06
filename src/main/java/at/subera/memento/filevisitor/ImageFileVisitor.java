@@ -18,21 +18,31 @@ import at.subera.memento.rest.service.ImageService;
 public class ImageFileVisitor extends SimpleFileVisitor<Path> {
 	protected ImageService imageService;
 	
-	private static final Logger logger = Logger.getLogger(ImageFileVisitor.class);
-	
+	protected Filter filter = new Filter();
+
+	private static final Logger logger = Logger
+			.getLogger(ImageFileVisitor.class);
+
+	public ImageFileVisitor() {
+	}
+
 	public void setImageService(ImageService imageService) {
 		this.imageService = imageService;
 	}
-	
+
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
 			throws IOException {
+		if (!filter.matchPath(file)) {
+			return FileVisitResult.CONTINUE;
+		}
+
 		if (logger.isInfoEnabled()) {
 			logger.info("Working on File: " + file.toString());
 		}
-		
+
 		imageService.addByPath(file);
-		
+
 		return FileVisitResult.CONTINUE;
 	}
 }
