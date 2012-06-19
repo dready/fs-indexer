@@ -36,6 +36,9 @@ public class ThreadInfo {
 	}
 
 	public boolean isRunning() {
+		if (start == null) {
+			return false;
+		}
 		return end == null;
 	}
 	
