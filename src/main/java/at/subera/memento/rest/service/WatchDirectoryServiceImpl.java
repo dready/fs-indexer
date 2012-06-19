@@ -162,4 +162,9 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 			return;
 		}
 	}
+
+	@Override
+	public Map<WatchKey, Path> get() {
+		return keys;
+	}
 }
