@@ -31,6 +31,8 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	protected FileVisitor<Path> imageVisitor;
 	protected FileVisitor<Path> dirVisitor;
 	protected ImageService imageService;
+	
+	protected AlbumService albumService;
 
 	public WatchDirectoryServiceImpl(boolean recursive) throws IOException {
 		this.watcher = FileSystems.getDefault().newWatchService();
@@ -53,11 +55,17 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	public void setImageService(ImageService imageService) {
 		this.imageService = imageService;
 	}
+	
+	public void setAlbumService(AlbumService albumService) {
+		this.albumService = albumService;
+	}
 
 	@Override
 	public void register(Path dir) throws IOException {
 		WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE,
 				ENTRY_MODIFY);
+		
+		albumService.add(dir);
 		if (trace && logger.isInfoEnabled()) {
 			Path prev = keys.get(key);
 			if (prev == null) {
@@ -155,6 +163,7 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	protected void handleChangesOnFiles(Path child, Kind<?> kind) {
 		if (kind == ENTRY_DELETE) {
 			imageService.removeByPath(child.toString());
+			albumService.remove(child);
 			return;
 		}
 		if (kind == ENTRY_CREATE || kind == ENTRY_MODIFY) {
