@@ -65,7 +65,7 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 		WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE,
 				ENTRY_MODIFY);
 		
-		albumService.add(dir);
+		//albumService.add(dir);
 		if (trace && logger.isInfoEnabled()) {
 			Path prev = keys.get(key);
 			if (prev == null) {
