@@ -162,12 +162,12 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 
 	protected void handleChangesOnFiles(Path child, Kind<?> kind) {
 		if (kind == ENTRY_DELETE) {
-			imageService.removeByPath(child.toString());
+			imageService.remove(child);
 			albumService.remove(child);
 			return;
 		}
 		if (kind == ENTRY_CREATE || kind == ENTRY_MODIFY) {
-			imageService.addByPath(child);
+			imageService.add(child);
 			return;
 		}
 	}

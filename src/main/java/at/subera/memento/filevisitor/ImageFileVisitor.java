@@ -41,7 +41,7 @@ public class ImageFileVisitor extends SimpleFileVisitor<Path> {
 			logger.info("Working on File: " + file.toString());
 		}
 
-		imageService.addByPath(file);
+		imageService.add(file);
 
 		return FileVisitResult.CONTINUE;
 	}
