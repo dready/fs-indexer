@@ -17,7 +17,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import at.subera.memento.tasks.CollectImagesTask;
+import at.subera.fs.indexer.IndexingThread;
 
 public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	private final WatchService watcher;
@@ -145,7 +145,7 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 		// if directory is created, and watching recursively, then
 		// register it and its sub-directories
 		if (recursive && (kind == ENTRY_CREATE)) {
-			CollectImagesTask task = new CollectImagesTask(child.toString());
+			IndexingThread task = new IndexingThread(child.toString());
 			task.setVisitor(dirVisitor);
 			task.init();
 		}
@@ -154,7 +154,7 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 			if (logger.isInfoEnabled()) {
 				logger.info("Modified Directory " + child.toString());
 			}
-			CollectImagesTask task = new CollectImagesTask(child.toString());
+			IndexingThread task = new IndexingThread(child.toString());
 			task.setVisitor(imageVisitor);
 			task.init();
 		}

@@ -1,4 +1,4 @@
-package at.subera.memento.filevisitor;
+package at.subera.fs.indexer.visitor;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class CompositeFileVisitor<E> implements FileVisitor<Path> {
+public class Broker<E> implements FileVisitor<Path> {
 	private static Map<Integer, FileVisitor<Path>> visitors = new HashMap<Integer, FileVisitor<Path>>();
 	
 	public void register(FileVisitor<Path> visitor) {
@@ -22,14 +22,14 @@ public class CompositeFileVisitor<E> implements FileVisitor<Path> {
 		visitors.remove(visitor);
 	}
 	
-	public CompositeFileVisitor() {
+	public Broker() {
 	}
 	
-	public CompositeFileVisitor(Map<Integer, FileVisitor<Path>> map) {
+	public Broker(Map<Integer, FileVisitor<Path>> map) {
 		visitors = map;
 	}
 	
-	public CompositeFileVisitor(List<FileVisitor<Path>> list) {
+	public Broker(List<FileVisitor<Path>> list) {
 		for (FileVisitor<Path> v : list) {
 			register(v);
 		}
