@@ -7,6 +7,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 
+import at.subera.fs.indexer.listener.IndexListenable;
 import org.apache.log4j.Logger;
 
 import at.subera.memento.rest.bean.Image;
@@ -17,7 +18,7 @@ import at.subera.memento.rest.service.ImageService;
  * 
  * checks Files if they are Images and add them into the imageService
  */
-public class ImageFileVisitor extends SimpleFileVisitor<Path> implements IndexFileVisitor<Path> {
+public class ImageFileVisitor extends SimpleFileVisitor<Path> implements IndexListenable<Path> {
 	protected ImageService imageService;
 	
 	protected Filter filter = new Filter();

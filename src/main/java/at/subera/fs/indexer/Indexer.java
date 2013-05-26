@@ -1,34 +1,38 @@
 package at.subera.fs.indexer;
 
 import java.io.IOException;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.EnumSet;
 
+import at.subera.fs.indexer.listener.IndexListenable;
 import org.apache.log4j.Logger;
-
-import at.subera.fs.indexer.visitor.IndexFileVisitor;
 
 public class Indexer {
 	private static final Logger logger = Logger.getLogger(Indexer.class);
 	
 	public static int MAX_DEPTH = 100;
 	
-	protected IndexFileVisitor<Path> visitor;
+	protected FileVisitor<Path> visitor;
 
-	public void setVisitor(IndexFileVisitor<Path> visitor) {
+    protected IndexListenable<Path> listener;
+
+	public void setVisitor(FileVisitor<Path> visitor) {
 		this.visitor = visitor;
 	}
 
-	public void index(String directory) {
+    public void setListener(IndexListenable<Path> listener) {
+        this.listener = listener;
+    }
+
+    public void index(String directory) {
 		if (logger.isInfoEnabled()) {
 			logger.info("Indexer start:" + directory);
 		}
-		
-		visitor.preIndex(directory);
-		
+
+        if (listener != null) {
+            listener.preIndex(directory);
+        }
+
 		// prepare visitors
 		Path root = Paths.get(directory);
 
@@ -45,9 +49,11 @@ public class Indexer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		visitor.postIndex(directory);
-		
+
+        if (listener != null) {
+            listener.postIndex(directory);
+        }
+
 		if (logger.isInfoEnabled()) {
 			logger.info("Indexer end:" + directory);
 		}
