@@ -1,4 +1,4 @@
-package at.subera.memento.filevisitor;
+package at.subera.fs.indexer.visitor;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;

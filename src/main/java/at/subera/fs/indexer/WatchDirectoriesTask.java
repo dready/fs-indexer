@@ -1,4 +1,4 @@
-package at.subera.memento.tasks;
+package at.subera.fs.indexer;
 
 import org.apache.log4j.Logger;
 
