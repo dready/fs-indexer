@@ -5,9 +5,11 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import at.subera.memento.rest.bean.Image;
 import at.subera.memento.rest.service.ImageService;
 
 /**
@@ -15,7 +17,7 @@ import at.subera.memento.rest.service.ImageService;
  * 
  * checks Files if they are Images and add them into the imageService
  */
-public class ImageFileVisitor extends SimpleFileVisitor<Path> {
+public class ImageFileVisitor extends SimpleFileVisitor<Path> implements IndexFileVisitor<Path> {
 	protected ImageService imageService;
 	
 	protected Filter filter = new Filter();
@@ -44,5 +46,16 @@ public class ImageFileVisitor extends SimpleFileVisitor<Path> {
 		imageService.add(file);
 
 		return FileVisitResult.CONTINUE;
+	}
+
+	@Override
+	public void preIndex(String directory) {}
+
+	@Override
+	public void postIndex(String directory) {
+		if (logger.isInfoEnabled()) {
+			List<Image> images = imageService.get();
+			logger.info("Collect End: Found " + images.size() + "images");
+		}
 	}
 }

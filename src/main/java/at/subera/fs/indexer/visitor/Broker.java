@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class Broker<E> implements FileVisitor<Path> {
+public class Broker<E> implements FileVisitor<Path>, IndexFileVisitor<Path> {
 	private static Map<Integer, FileVisitor<Path>> visitors = new HashMap<Integer, FileVisitor<Path>>();
 	
 	public void register(FileVisitor<Path> visitor) {
@@ -79,4 +79,28 @@ public class Broker<E> implements FileVisitor<Path> {
 		return FileVisitResult.CONTINUE;
 	}
 
+	@Override
+	public void preIndex(String directory) {
+		Iterator<Entry<Integer, FileVisitor<Path>>> it = visitors.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<Integer, FileVisitor<Path>> pairs = (Map.Entry<Integer, FileVisitor<Path>>)it.next();
+			
+			FileVisitor<Path> visitor = pairs.getValue();
+			if (visitor instanceof IndexFileVisitor) {
+				((IndexFileVisitor<?>) visitor).preIndex(directory);
+			}
+		}
+	}
+
+	@Override
+	public void postIndex(String directory) {
+		Iterator<Entry<Integer, FileVisitor<Path>>> it = visitors.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<Integer, FileVisitor<Path>> pairs = (Map.Entry<Integer, FileVisitor<Path>>)it.next();
+			FileVisitor<Path> visitor = pairs.getValue();
+			if (visitor instanceof IndexFileVisitor) {
+				((IndexFileVisitor<?>) visitor).postIndex(directory);
+			}
+		}
+	}
 }
