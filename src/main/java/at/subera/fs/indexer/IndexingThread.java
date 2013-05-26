@@ -43,10 +43,5 @@ public class IndexingThread implements Runnable {
 //			statsService.endThread(this);
 //		}
 //		
-//		if (logger.isInfoEnabled() && imageService != null) {
-//			List<Image> images = imageService.get();
-//			logger.info("Collect End: Found " + images.size() + "images");
-//		}
 	}
-
 }
