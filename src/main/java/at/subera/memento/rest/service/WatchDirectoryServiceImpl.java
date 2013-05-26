@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import at.subera.fs.indexer.Indexer;
 import at.subera.fs.indexer.IndexingThread;
 
 public class WatchDirectoryServiceImpl implements WatchDirectoryService {
@@ -28,10 +29,9 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	private static final Logger logger = Logger
 			.getLogger(WatchDirectoryServiceImpl.class);
 
-	protected FileVisitor<Path> imageVisitor;
-	protected FileVisitor<Path> dirVisitor;
-	protected ImageService imageService;
+	protected Indexer indexer;
 	
+	protected ImageService imageService;	
 	protected AlbumService albumService;
 
 	public WatchDirectoryServiceImpl(boolean recursive) throws IOException {
@@ -44,20 +44,16 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 		this(false);
 	}
 
-	public void setImageVisitor(FileVisitor<Path> visitor) {
-		this.imageVisitor = visitor;
-	}
-
-	public void setDirVisitor(FileVisitor<Path> dirVisitor) {
-		this.dirVisitor = dirVisitor;
-	}
-
 	public void setImageService(ImageService imageService) {
 		this.imageService = imageService;
 	}
 	
 	public void setAlbumService(AlbumService albumService) {
 		this.albumService = albumService;
+	}
+
+	public void setIndexer(Indexer indexer) {
+		this.indexer = indexer;
 	}
 
 	@Override
@@ -146,7 +142,7 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 		// register it and its sub-directories
 		if (recursive && (kind == ENTRY_CREATE)) {
 			IndexingThread task = new IndexingThread(child.toString());
-			task.setVisitor(dirVisitor);
+			task.setIndexer(indexer);
 			task.init();
 		}
 
@@ -155,7 +151,7 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 				logger.info("Modified Directory " + child.toString());
 			}
 			IndexingThread task = new IndexingThread(child.toString());
-			task.setVisitor(imageVisitor);
+			task.setIndexer(indexer);
 			task.init();
 		}
 	}
