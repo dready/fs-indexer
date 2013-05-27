@@ -1,7 +1,7 @@
-
 /.settings
 /target
 /.classpath
 /.project
 /bin
 /src/main/resources/deployment.properties
+/memento-server.iml
