@@ -1,4 +1,4 @@
-package at.subera.fs.indexer.listener;
+package at.subera.fs.indexer.index.listener;
 
 public interface IndexListenable<T>
 {

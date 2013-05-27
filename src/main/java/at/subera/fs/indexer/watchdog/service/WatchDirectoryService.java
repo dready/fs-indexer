@@ -1,4 +1,4 @@
-package at.subera.fs.indexer.service;
+package at.subera.fs.indexer.watchdog.service;
 
 import java.io.IOException;
 import java.nio.file.Path;

@@ -1,6 +1,6 @@
 package at.subera.memento.indexer;
 
-import at.subera.fs.indexer.listener.IndexListenable;
+import at.subera.fs.indexer.index.listener.IndexListenable;
 import at.subera.memento.rest.service.StatsService;
 
 import java.nio.file.Path;

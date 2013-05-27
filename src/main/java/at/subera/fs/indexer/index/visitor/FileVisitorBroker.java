@@ -1,4 +1,4 @@
-package at.subera.fs.indexer.visitor;
+package at.subera.fs.indexer.index.visitor;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;

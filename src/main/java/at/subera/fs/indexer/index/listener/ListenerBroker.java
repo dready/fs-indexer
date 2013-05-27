@@ -1,19 +1,11 @@
-package at.subera.fs.indexer.listener;
+package at.subera.fs.indexer.index.listener;
 
-import java.nio.file.FileVisitor;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created with IntelliJ IDEA.
- * User: tsubera
- * Date: 26.05.13
- * Time: 21:24
- * To change this template use File | Settings | File Templates.
- */
 public class ListenerBroker<E> implements IndexListenable<Path>
 {
     private static Map<Integer, IndexListenable<Path>> visitors = new HashMap<Integer, IndexListenable<Path>>();

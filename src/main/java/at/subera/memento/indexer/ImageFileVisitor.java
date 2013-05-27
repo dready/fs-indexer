@@ -4,22 +4,28 @@ import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.WatchEvent;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 
-import at.subera.fs.indexer.listener.IndexListenable;
-import at.subera.fs.indexer.visitor.Filter;
+import at.subera.fs.indexer.index.listener.IndexListenable;
+import at.subera.fs.indexer.index.visitor.Filter;
+import at.subera.fs.indexer.watchdog.listener.Watchable;
 import org.apache.log4j.Logger;
 
 import at.subera.memento.rest.bean.Image;
 import at.subera.memento.rest.service.ImageService;
+
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 /**
  * ImageFileVisitor
  * 
  * checks Files if they are Images and add them into the imageService
  */
-public class ImageFileVisitor extends SimpleFileVisitor<Path> implements IndexListenable<Path> {
+public class ImageFileVisitor extends SimpleFileVisitor<Path> implements IndexListenable<Path>, Watchable<Path> {
 	protected ImageService imageService;
 	
 	protected Filter filter = new Filter();
@@ -60,4 +66,22 @@ public class ImageFileVisitor extends SimpleFileVisitor<Path> implements IndexLi
 			logger.info("Collect End: Found " + images.size() + "images");
 		}
 	}
+
+    @Override
+    public void visitFile(Path child, WatchEvent.Kind<?> kind) {
+        // do nothing
+    }
+
+    @Override
+    public void visitDirectory(Path child, WatchEvent.Kind<?> kind) {
+        if (kind == ENTRY_DELETE) {
+            imageService.remove(child);
+//            albumService.remove(child);
+            return;
+        }
+        if (kind == ENTRY_CREATE || kind == ENTRY_MODIFY) {
+            imageService.add(child);
+            return;
+        }
+    }
 }

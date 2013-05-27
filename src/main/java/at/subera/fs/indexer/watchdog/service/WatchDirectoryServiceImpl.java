@@ -1,4 +1,4 @@
-package at.subera.fs.indexer.service;
+package at.subera.fs.indexer.watchdog.service;
 
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 import static java.nio.file.StandardWatchEventKinds.*;
@@ -14,55 +14,38 @@ import java.nio.file.WatchService;
 import java.util.HashMap;
 import java.util.Map;
 
+import at.subera.fs.indexer.watchdog.listener.Watchable;
 import at.subera.memento.rest.service.AlbumService;
 import at.subera.memento.rest.service.ImageService;
 import org.apache.log4j.Logger;
 
-import at.subera.fs.indexer.Indexer;
-import at.subera.fs.indexer.IndexingThread;
+import at.subera.fs.indexer.index.Indexer;
+import at.subera.fs.indexer.index.IndexingThread;
 
 public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	private final WatchService watcher;
 	private final Map<WatchKey, Path> keys;
-	private final boolean recursive;
 	private boolean trace;
 
 	private static final Logger logger = Logger
 			.getLogger(WatchDirectoryServiceImpl.class);
 
-	protected Indexer indexer;
-	
-	protected ImageService imageService;
-	protected AlbumService albumService;
-
-	public WatchDirectoryServiceImpl(boolean recursive) throws IOException {
-		this.watcher = FileSystems.getDefault().newWatchService();
-		this.keys = new HashMap<WatchKey, Path>();
-		this.recursive = recursive;
-	}
+    protected Watchable<Path> listener;
 
 	public WatchDirectoryServiceImpl() throws IOException {
-		this(false);
+		this.watcher = FileSystems.getDefault().newWatchService();
+		this.keys = new HashMap<WatchKey, Path>();
 	}
 
-	public void setImageService(ImageService imageService) {
-		this.imageService = imageService;
-	}
-	
-	public void setAlbumService(AlbumService albumService) {
-		this.albumService = albumService;
-	}
+    public void setListener(Watchable<Path> listener) {
+        this.listener = listener;
+    }
 
-	public void setIndexer(Indexer indexer) {
-		this.indexer = indexer;
-	}
-
-	@Override
+    @Override
 	public void register(Path dir) throws IOException {
 		WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE,
 				ENTRY_MODIFY);
 		
-		//albumService.add(dir);
 		if (trace && logger.isInfoEnabled()) {
 			Path prev = keys.get(key);
 			if (prev == null) {
@@ -124,10 +107,14 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 						child));
 			}
 
+            if (listener == null) {
+                continue;
+            }
+
 			if (Files.isDirectory(child, NOFOLLOW_LINKS)) {
-				handleChangesOnDirectory(child, kind);
+				listener.visitDirectory(child, kind);
 			} else {
-				handleChangesOnFiles(child, kind);
+				listener.visitFile(child, kind);
 			}
 		}
 
@@ -135,37 +122,6 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 		boolean valid = key.reset();
 		if (!valid) {
 			keys.remove(key);
-		}
-	}
-
-	protected void handleChangesOnDirectory(Path child, Kind<?> kind) {
-		// if directory is created, and watching recursively, then
-		// register it and its sub-directories
-		if (recursive && (kind == ENTRY_CREATE)) {
-			IndexingThread task = new IndexingThread(child.toString());
-			task.setIndexer(indexer);
-			task.init();
-		}
-
-		if (kind == ENTRY_MODIFY) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Modified Directory " + child.toString());
-			}
-			IndexingThread task = new IndexingThread(child.toString());
-			task.setIndexer(indexer);
-			task.init();
-		}
-	}
-
-	protected void handleChangesOnFiles(Path child, Kind<?> kind) {
-		if (kind == ENTRY_DELETE) {
-			imageService.remove(child);
-			albumService.remove(child);
-			return;
-		}
-		if (kind == ENTRY_CREATE || kind == ENTRY_MODIFY) {
-			imageService.add(child);
-			return;
 		}
 	}
 
