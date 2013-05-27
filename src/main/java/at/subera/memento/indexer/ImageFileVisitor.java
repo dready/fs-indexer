@@ -69,11 +69,6 @@ public class ImageFileVisitor extends SimpleFileVisitor<Path> implements IndexLi
 
     @Override
     public void visitFile(Path child, WatchEvent.Kind<?> kind) {
-        // do nothing
-    }
-
-    @Override
-    public void visitDirectory(Path child, WatchEvent.Kind<?> kind) {
         if (kind == ENTRY_DELETE) {
             imageService.remove(child);
 //            albumService.remove(child);
@@ -81,7 +76,12 @@ public class ImageFileVisitor extends SimpleFileVisitor<Path> implements IndexLi
         }
         if (kind == ENTRY_CREATE || kind == ENTRY_MODIFY) {
             imageService.add(child);
-            return;
+//            return;
         }
+    }
+
+    @Override
+    public void visitDirectory(Path child, WatchEvent.Kind<?> kind) {
+        // do nothing
     }
 }
