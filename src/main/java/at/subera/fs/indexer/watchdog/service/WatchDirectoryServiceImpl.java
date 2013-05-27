@@ -15,12 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import at.subera.fs.indexer.watchdog.listener.Watchable;
-import at.subera.memento.rest.service.AlbumService;
-import at.subera.memento.rest.service.ImageService;
 import org.apache.log4j.Logger;
-
-import at.subera.fs.indexer.index.Indexer;
-import at.subera.fs.indexer.index.IndexingThread;
 
 public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	private final WatchService watcher;
@@ -30,14 +25,14 @@ public class WatchDirectoryServiceImpl implements WatchDirectoryService {
 	private static final Logger logger = Logger
 			.getLogger(WatchDirectoryServiceImpl.class);
 
-    protected Watchable<Path> listener;
+    protected Watchable listener;
 
 	public WatchDirectoryServiceImpl() throws IOException {
 		this.watcher = FileSystems.getDefault().newWatchService();
 		this.keys = new HashMap<WatchKey, Path>();
 	}
 
-    public void setListener(Watchable<Path> listener) {
+    public void setListener(Watchable listener) {
         this.listener = listener;
     }
 

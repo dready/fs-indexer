@@ -25,7 +25,7 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
  * 
  * checks Files if they are Images and add them into the imageService
  */
-public class ImageFileVisitor extends SimpleFileVisitor<Path> implements IndexListenable<Path>, Watchable<Path> {
+public class ImageFileVisitor extends SimpleFileVisitor<Path> implements IndexListenable, Watchable {
 	protected ImageService imageService;
 	
 	protected Filter filter = new Filter();

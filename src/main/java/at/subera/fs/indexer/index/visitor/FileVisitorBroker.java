@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class FileVisitorBroker<E> implements FileVisitor<Path> {
+public class FileVisitorBroker implements FileVisitor<Path> {
 	private static Map<Integer, FileVisitor<Path>> visitors = new HashMap<Integer, FileVisitor<Path>>();
 	
 	public void register(FileVisitor<Path> visitor) {
@@ -40,7 +40,7 @@ public class FileVisitorBroker<E> implements FileVisitor<Path> {
 			throws IOException {
 		Iterator<Entry<Integer, FileVisitor<Path>>> it = visitors.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry<Integer, FileVisitor<Path>> pairs = (Map.Entry<Integer, FileVisitor<Path>>)it.next();
+			Map.Entry<Integer, FileVisitor<Path>> pairs = it.next();
 			pairs.getValue().preVisitDirectory(dir, attrs);
 		}
 		return FileVisitResult.CONTINUE;
@@ -51,7 +51,7 @@ public class FileVisitorBroker<E> implements FileVisitor<Path> {
 			throws IOException {
 		Iterator<Entry<Integer, FileVisitor<Path>>> it = visitors.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry<Integer, FileVisitor<Path>> pairs = (Map.Entry<Integer, FileVisitor<Path>>)it.next();
+			Map.Entry<Integer, FileVisitor<Path>> pairs = it.next();
 			pairs.getValue().visitFile(file, attrs);
 		}
 		return FileVisitResult.CONTINUE;
@@ -62,7 +62,7 @@ public class FileVisitorBroker<E> implements FileVisitor<Path> {
 			throws IOException {
 		Iterator<Entry<Integer, FileVisitor<Path>>> it = visitors.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry<Integer, FileVisitor<Path>> pairs = (Map.Entry<Integer, FileVisitor<Path>>)it.next();
+			Map.Entry<Integer, FileVisitor<Path>> pairs = it.next();
 			pairs.getValue().visitFileFailed(file, exc);
 		}
 		return FileVisitResult.TERMINATE;
@@ -73,7 +73,7 @@ public class FileVisitorBroker<E> implements FileVisitor<Path> {
 			throws IOException {
 		Iterator<Entry<Integer, FileVisitor<Path>>> it = visitors.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry<Integer, FileVisitor<Path>> pairs = (Map.Entry<Integer, FileVisitor<Path>>)it.next();
+			Map.Entry<Integer, FileVisitor<Path>> pairs = it.next();
 			pairs.getValue().postVisitDirectory(dir, exc);
 		}
 		return FileVisitResult.CONTINUE;

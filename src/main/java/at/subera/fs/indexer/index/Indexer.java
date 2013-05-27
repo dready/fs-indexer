@@ -14,13 +14,13 @@ public class Indexer {
 	
 	protected FileVisitor<Path> visitor;
 
-    protected IndexListenable<Path> listener;
+    protected IndexListenable listener;
 
 	public void setVisitor(FileVisitor<Path> visitor) {
 		this.visitor = visitor;
 	}
 
-    public void setListener(IndexListenable<Path> listener) {
+    public void setListener(IndexListenable listener) {
         this.listener = listener;
     }
 

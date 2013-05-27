@@ -10,7 +10,7 @@ import java.nio.file.WatchEvent;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
-public class IndexListener implements Watchable<Path> {
+public class IndexListener implements Watchable {
     private final boolean recursive;
 
     private static final Logger logger = Logger

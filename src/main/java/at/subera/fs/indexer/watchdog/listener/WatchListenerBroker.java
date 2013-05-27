@@ -7,35 +7,34 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class WatchListenerBroker implements Watchable<Path>
-{
-    private static Map<Integer, Watchable<Path>> listeners = new HashMap<Integer, Watchable<Path>>();
+public class WatchListenerBroker implements Watchable {
+    private static Map<Integer, Watchable> listeners = new HashMap<>();
 
-    public void register(Watchable<Path> listener) {
+    public void register(Watchable listener) {
         listeners.put(listener.hashCode(), listener);
     }
 
-    public void unregister(Watchable<Path> listener) {
+    public void unregister(Watchable listener) {
         listeners.remove(listener);
     }
 
     public WatchListenerBroker() {}
 
-    public WatchListenerBroker(Map<Integer, Watchable<Path>> map) {
+    public WatchListenerBroker(Map<Integer, Watchable> map) {
         listeners = map;
     }
 
-    public WatchListenerBroker(List<Watchable<Path>> list) {
-        for (Watchable<Path> l : list) {
+    public WatchListenerBroker(List<Watchable> list) {
+        for (Watchable l : list) {
             register(l);
         }
     }
 
     @Override
     public void visitFile(Path child, WatchEvent.Kind<?> kind) {
-        Iterator<Map.Entry<Integer, Watchable<Path>>> it = listeners.entrySet().iterator();
+        Iterator<Map.Entry<Integer, Watchable>> it = listeners.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry<Integer, Watchable<Path>> pairs = (Map.Entry<Integer, Watchable<Path>>)it.next();
+            Map.Entry<Integer, Watchable> pairs = it.next();
 
             pairs.getValue().visitFile(child, kind);
         }
@@ -43,9 +42,9 @@ public class WatchListenerBroker implements Watchable<Path>
 
     @Override
     public void visitDirectory(Path child, WatchEvent.Kind<?> kind) {
-        Iterator<Map.Entry<Integer, Watchable<Path>>> it = listeners.entrySet().iterator();
+        Iterator<Map.Entry<Integer, Watchable>> it = listeners.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry<Integer, Watchable<Path>> pairs = (Map.Entry<Integer, Watchable<Path>>)it.next();
+            Map.Entry<Integer, Watchable> pairs = it.next();
 
             pairs.getValue().visitDirectory(child, kind);
         }

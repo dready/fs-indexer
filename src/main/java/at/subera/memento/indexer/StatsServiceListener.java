@@ -3,10 +3,7 @@ package at.subera.memento.indexer;
 import at.subera.fs.indexer.index.listener.IndexListenable;
 import at.subera.memento.rest.service.StatsService;
 
-import java.nio.file.Path;
-
-public class StatsServiceListener implements IndexListenable<Path>
-{
+public class StatsServiceListener implements IndexListenable {
     private StatsService statsService;
 
     public void ßsetStatsService(StatsService statsService) {

@@ -11,8 +11,8 @@ import at.subera.fs.indexer.watchdog.service.WatchDirectoryService;
 public class WatchDirVisitor extends SimpleFileVisitor<Path> {
 	private WatchDirectoryService watchDirectoyService;
 	
-	public void setWatchDirectoyService(WatchDirectoryService watchDirectoyService) {
-		this.watchDirectoyService = watchDirectoyService;
+	public void setWatchDirectoryService(WatchDirectoryService watchDirectoryService) {
+		this.watchDirectoyService = watchDirectoryService;
 	}
 
 	@Override
