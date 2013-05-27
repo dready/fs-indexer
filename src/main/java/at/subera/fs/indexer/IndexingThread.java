@@ -33,15 +33,6 @@ public class IndexingThread implements Runnable {
 	
 	@Override
 	public void run() {
-//		if (statsService != null) {
-//			statsService.startThread(this);
-//		}
-	
 		indexer.index(directory);
-		
-//		if (statsService != null) {
-//			statsService.endThread(this);
-//		}
-//		
 	}
 }

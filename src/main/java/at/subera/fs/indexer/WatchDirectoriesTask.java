@@ -2,7 +2,7 @@ package at.subera.fs.indexer;
 
 import org.apache.log4j.Logger;
 
-import at.subera.memento.rest.service.WatchDirectoryService;
+import at.subera.fs.indexer.service.WatchDirectoryService;
 
 public class WatchDirectoriesTask implements Runnable {
 	protected WatchDirectoryService watchDirectoryService;

@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import at.subera.memento.rest.service.WatchDirectoryService;
+import at.subera.fs.indexer.service.WatchDirectoryService;
 
 public class WatchDirVisitor extends SimpleFileVisitor<Path> {
 	private WatchDirectoryService watchDirectoyService;
