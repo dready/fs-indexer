@@ -2,6 +2,7 @@ package at.subera.fs.indexer.watchdog.listener;
 
 import at.subera.fs.indexer.index.Indexer;
 import at.subera.fs.indexer.index.IndexingThread;
+import at.subera.fs.indexer.watchdog.service.WatchDirectoryService;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
@@ -10,6 +11,9 @@ import java.nio.file.WatchEvent;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
+/**
+ * Indexer Listener of the {@link WatchDirectoryService} for Indexing newly created Directories or modified Directories
+ */
 public class IndexListener implements Watchable {
     private final boolean recursive;
 
