@@ -1,6 +1,10 @@
 package at.subera.fs.indexer.index;
 
-
+/**
+ * Indexing Thread
+ *
+ * starts injected {@link Indexer}
+ */
 public class IndexingThread implements Runnable {
 	protected String directory;
 	
