@@ -9,7 +9,6 @@ import java.util.EnumSet;
 
 /**
  * Indexing Class
- *
  * walks through all Files and Directories with the injected visitor {@link FileVisitor}
  */
 public class Indexer {
@@ -31,6 +30,7 @@ public class Indexer {
 
     /**
      * Indexes all files and subdirectories from the directory parameter
+     *
      * @param directory start point of indexing process
      */
     public void index(String directory) {
