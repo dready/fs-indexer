@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * Broker for {@link FileVisitor} to handle several Visitors
+ */
 public class FileVisitorBroker implements FileVisitor<Path> {
 	private static Map<Integer, FileVisitor<Path>> visitors = new HashMap<Integer, FileVisitor<Path>>();
 	
