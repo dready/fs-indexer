@@ -1,10 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<name>FileSystem Indexer</name>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>at.subera.memento</groupId>
-	<artifactId>memento-server</artifactId>
-	<version>3.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<groupId>at.subera.fs</groupId>
+	<artifactId>indexer</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
 	<properties>
 		<spring-security.version>3.1.0.RELEASE</spring-security.version>
@@ -14,21 +15,8 @@
 	</properties>
 
 	<build>
-		<finalName>mementoj-server</finalName>
+		<finalName>filesystem-indexer</finalName>
 		<plugins>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>7.5.4.v20111024</version>
-				<configuration>
-					<connectors>
-						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-							<port>9090</port>
-							<maxIdleTime>60000</maxIdleTime>
-						</connector>
-					</connectors>
-				</configuration>
-			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
@@ -41,60 +29,6 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
-			<version>8.1.2.v20120308</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>3.0.5.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>3.0.5.RELEASE</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-core</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>3.0.5.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.8.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-oxm</artifactId>
-			<version>3.1.1.RELEASE</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-core</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-			<version>${spring-security.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-			<version>${spring-security.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.14</version>
@@ -104,25 +38,11 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.0.1</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com-drewnoakes</groupId>
-			<artifactId>metadata-extractor</artifactId>
-			<version>2.5.0-RC3</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/metadata-extractor-2.5.0-RC3.jar</systemPath>
-		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>eu.medsea.mimeutil</groupId>
-			<artifactId>mime-util</artifactId>
-			<version>1.3</version>
 		</dependency>
 	</dependencies>
 	
@@ -196,9 +116,4 @@
 			</plugin>-->
 		</plugins>
 	</reporting>
-	<issueManagement>
-		<system>FogBugz</system>
-		<url>https://dready.fogbugz.com/</url>
-	</issueManagement>
-	<name>Memento</name>
 </project>
