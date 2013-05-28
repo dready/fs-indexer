@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Composite {@link IndexListenable} Broker to handle more Listeners if available
+ */
 public class ListenerBroker implements IndexListenable {
     private static Map<Integer, IndexListenable> visitors = new HashMap<>();
 
